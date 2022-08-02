@@ -5,11 +5,11 @@ import time
 # +++ SET UP SOME DATA +++ #
 CURRENCY = "usd"
 COIN = "bitcoin"
-SENDER_NR = '#'
+SENDER_NR = '#' #create a free account on twilio and set the numbers
 RECEIVER_NR = '#'
 
 # +++++ TWILIO API ++++++#
-account_sid = '#'
+account_sid = '#'#provide twilio api keys
 auth_token = '#'
 client = Client(account_sid, auth_token)
 
@@ -18,7 +18,7 @@ API_ENDPOINT = "https://api.coingecko.com/api/v3/coins/markets"
 
 # +++++ NEWS API ++++#
 NEWSAPI_ENDPOINT = "https://newsapi.org/v2/everything"
-NEWSAPI_KEY = "#"
+NEWSAPI_KEY = "#" #create account on newsapi and paste your key
 
 news_params = {
     "q": COIN,
