@@ -1,24 +1,25 @@
 import requests as rq
 from twilio.rest import Client
 import time
+import apikeys
 
 # +++ SET UP SOME DATA +++ #
 CURRENCY = "usd"
 COIN = "bitcoin"
-SENDER_NR = '#' #create a free account on twilio and set the numbers
-RECEIVER_NR = '#'
+SENDER_NR = apikeys.SENDER_NR
+RECEIVER_NR = apikeys.RECEIVER_NR
 
 # +++++ TWILIO API ++++++#
-account_sid = '#'#provide twilio api keys
-auth_token = '#'
+account_sid = apikeys.account_sid
+auth_token = apikeys.auth_token
 client = Client(account_sid, auth_token)
 
 # +++++ COINGECKO API ++++#
-API_ENDPOINT = "https://api.coingecko.com/api/v3/coins/markets"
+API_ENDPOINT = apikeys.API_ENDPOINT
 
 # +++++ NEWS API ++++#
-NEWSAPI_ENDPOINT = "https://newsapi.org/v2/everything"
-NEWSAPI_KEY = "#" #create account on newsapi and paste your key
+NEWSAPI_ENDPOINT = apikeys.NEWSAPI_ENDPOINT
+NEWSAPI_KEY = apikeys.NEWSAPI_KEY
 
 news_params = {
     "q": COIN,
@@ -31,7 +32,6 @@ params = {
 }
 
 while True:
-    #run every 60 seconds
     time.sleep(60)
 
     # let's grab some hot news about our COIN
@@ -57,18 +57,15 @@ while True:
     else:
         percentage_to_print = f"{price_action}% ▼"
 
-    # let's print these news and COIN'S status to the console...
     for n in range(0, 3):
         any_news = f"{COIN.title()}: {percentage_to_print} {articles[n]['source']['name']}: " \
                    f"{articles[n]['title']}\n{articles[n]['description']}\n"
         print(any_news)
-        # ...and send a text message if significant drop was detected - this is 10% but you can pick whatever
-        # Or you can put the for loop inside this if statement, to generate text headers only if coin drops hard
-        if price_action <= -10:
+        if price_action <= -2:
             message = client.messages \
                 .create(
-                    body=f"{any_news}",
-                    from_=SENDER_NR,
-                    to =RECEIVER_NR,
+                body=f"{any_news}",
+                from_=SENDER_NR,
+                to=RECEIVER_NR,
             )
             print(message.status)
